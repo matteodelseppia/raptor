@@ -183,16 +183,28 @@ using Status = Result<void>;
 
 // ---------------------------------------------------------------------------
 // ADL hook so std::error_code{some_errc} works directly
+//
+// make_error_code must live in the same namespace as Errc so ADL can
+// find it when std::error_code's constructor calls
+// make_error_code(e). The is_error_code_enum specialisation opts Errc
+// into the overload set.
 // ---------------------------------------------------------------------------
 
 template <>
 struct std::is_error_code_enum<Raptor::Errc> : std::true_type {};
 
-namespace std {
-[[nodiscard]] inline error_code make_error_code(
-  Raptor::Errc errc) noexcept {
-  return Raptor::MakeErrorCode(errc);
+namespace Raptor {
+/**
+ * @brief ADL-visible overload enabling `std::error_code ec =
+ * someErrc;`.
+ *
+ * Found by argument-dependent lookup on `Errc`; delegates to
+ * `MakeErrorCode`.
+ */
+[[nodiscard]] inline std::error_code make_error_code(
+  Errc errc) noexcept {
+  return MakeErrorCode(errc);
 }
-}  // namespace std
+}  // namespace Raptor
 
 #endif  // RAPTOR_DOMAIN_ERROR_HPP
