@@ -13,17 +13,17 @@ abstraction so tests never wait for real seconds to pass.
 
 ## Detailed Design (for engineers)
 
-In `interfaces/`, define `class IClock { virtual time_point now() const; }`
+In `interfaces/`, define `class Raptor::Clock { virtual time_point Now() const; }`
 using `std::chrono::steady_clock::time_point` for monotonic durations (and a
 separate `system_clock` accessor only where wall time is needed, e.g. logs).
 Provide `SystemClock` in infrastructure and `FakeClock` (test double, advanceable
 via `advance(duration)`) in a test-support library. Provide a `Timer`/deadline
-helper built on `IClock`. All rate/timeout code must depend on `IClock`, never
+helper built on `Raptor::Clock`. All rate/timeout code must depend on `Clock`, never
 call `chrono::now()` directly.
 
 ## Acceptance Criteria
 
-- `IClock` abstracts monotonic now(); production code never calls `steady_clock::now()` directly.
+- `Clock` abstracts monotonic now(); production code never calls `steady_clock::now()` directly.
 - `FakeClock` supports deterministic `advance()`.
 - A deadline/timer helper computes elapsed/remaining from an injected clock.
 
