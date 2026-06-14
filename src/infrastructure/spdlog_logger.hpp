@@ -88,7 +88,7 @@ class SpdlogLogger final : public Logger {
    */
   [[nodiscard]] static std::unique_ptr<SpdlogLogger> MakeRotatingFile(
     std::string_view filePath,
-    std::size_t maxFileSize = 10 * 1024 * 1024,
+    std::size_t maxFileSize = 10ULL * 1024ULL * 1024ULL,
     std::size_t maxFiles = 3, std::string_view name = "raptor");
 
   // ---------------------------------------------------------------------------
