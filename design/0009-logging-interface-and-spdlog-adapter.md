@@ -14,23 +14,14 @@ hidden.
 
 ## Detailed Design (for engineers)
 
-In `interfaces/`, define `class ILogger` with leveled methods
-(`trace/debug/info/warn/error`) taking a `std::string_view` message and a
-`std::source_location` defaulted argument. Prefer a small structured-field
-overload (`info(msg, std::span<const Field>)` where `Field` is key/value) to
-support the structured logging the project wants. Provide a global accessor
-`raptor::log()` returning the active `ILogger&` plus an injection point for
-tests. In `infrastructure/`, implement `SpdlogLogger : ILogger` wrapping spdlog
-sinks (console + rotating file). Enforce: **no `std::cout`/`std::cerr`** anywhere
-in production code; add a clang-tidy/grep CI guard if cheap. spdlog headers are
-included only in the adapter `.cpp`.
+In `interfaces/`, define `class Raptor::Logger` with leveled methods (`trace/debug/info/warn/error`) taking a `std::string_view` message and a `std::source_location` defaulted argument. Prefer a small structured-field overload (`info(msg, std::span<const Field>)` where `Field` is key/value) to support the structured logging the project wants. Provide a global accessor `Raptor::Log()` returning the active `Raptor::Logger&` plus an injection point for tests. In `infrastructure/`, implement `Raptor::Detail::SpdlogLogger : Raptor::Logger` wrapping spdlog sinks (console + rotating file). Enforce: **no `std::cout`/`std::cerr`** anywhere in production code; add a clang-tidy/grep CI guard if cheap. spdlog headers are included only in the adapter `.cpp`.
 
 ## Acceptance Criteria
 
-- `ILogger` exposes leveled + structured logging and lives in `interfaces/` (no spdlog include).
-- `SpdlogLogger` routes to console and rotating file sinks.
-- Production code references only `ILogger`; spdlog appears only in infrastructure.
-- No `std::cout`/`std::cerr` in `src/` (verified by grep in CI).
+- `Raptor::Logger` exposes leveled + structured logging and lives in `interfaces/` (no spdlog include).
+- `Raptor::Detail::SpdlogLogger` routes to console and/or rotating file sinks.
+- Production code references only `Raptor::Logger`; spdlog appears only in infrastructure details.
+- No `std::cout`/`std::cerr` in `src/`.
 
 ## Testing Strategy
 

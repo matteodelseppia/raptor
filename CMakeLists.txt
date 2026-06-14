@@ -42,6 +42,8 @@ endif()
 add_library(raptor_core
     src/application/version.cpp
     src/domain/error.cpp
+    src/interfaces/logger.cpp
+    src/infrastructure/spdlog_logger.cpp
 )
 
 target_include_directories(raptor_core
@@ -52,6 +54,7 @@ target_include_directories(raptor_core
 target_link_libraries(raptor_core
     PRIVATE
         raptor_warnings
+        spdlog::spdlog
         $<$<TARGET_EXISTS:raptor_sanitizers>:raptor_sanitizers>
 )
 
