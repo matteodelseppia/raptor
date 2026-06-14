@@ -34,6 +34,7 @@ Document the preset names in `design/README.md` (task 0055 index references them
 - `cmake --build --preset gcc-debug` builds; `ctest --preset gcc-debug` runs.
 - Presets pin the required compilers (gcc-16, clang-22) via cache/env vars.
 - `compile_commands.json` is generated in each build dir.
+- appleclang-debug and appleclang-release should run in local successfully.
 
 ## Testing Strategy
 

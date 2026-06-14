@@ -16,6 +16,27 @@ background), an **Estimated Effort** (≤ 1 hour), **Acceptance Criteria**, and 
 > Silicon (AppleClang)**, and **Windows MSVC 19**. Builds use **CMake presets**;
 > dependencies are fetched with **FetchContent**.
 
+## CMake Presets reference
+
+`CMakePresets.json` (schema version 6) defines the following named presets.
+All configure presets set `CMAKE_EXPORT_COMPILE_COMMANDS=ON` and use Ninja with
+`build/<presetName>` as the binary directory.
+
+| Preset name | Toolchain | Build type | Notes |
+|---|---|---|---|
+| `gcc-debug` | GCC 16 (`gcc-16` / `g++-16`) | Debug | Linux |
+| `gcc-release` | GCC 16 | Release | Linux |
+| `clang-debug` | Clang 22 (`clang-22` / `clang++-22`) | Debug | Linux |
+| `clang-release` | Clang 22 | Release | Linux |
+| `appleclang-debug` | Apple Clang (Xcode default) | Debug | macOS only |
+| `appleclang-release` | Apple Clang | Release | macOS only |
+| `msvc-debug` | MSVC (`cl`) | Debug | Windows only |
+| `msvc-release` | MSVC | Release | Windows only |
+| `dev` | Apple Clang (inherits `appleclang-debug`) | Debug | Enables `RAPTOR_SANITIZE=ON` (ASan + UBSan) |
+
+Each configure preset has a matching **build preset** and **test preset**
+(with `outputOnFailure: true`).
+
 ## How to build (after M0)
 
 ```bash
