@@ -7,6 +7,7 @@
 #include "raptor/domain/error.hpp"
 
 #include <string>
+#include <system_error>
 
 namespace Raptor {
 

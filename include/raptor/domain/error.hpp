@@ -34,6 +34,7 @@
 #ifndef RAPTOR_DOMAIN_ERROR_HPP
 #define RAPTOR_DOMAIN_ERROR_HPP
 
+#include <cstdint>
 #include <expected>
 #include <string>
 #include <string_view>
@@ -51,7 +52,7 @@ namespace Raptor {
  * Each enumerator represents a distinct class of failure.
  * Fine-grained context is carried by `Error::Message()`.
  */
-enum class Errc {
+enum class Errc : std::uint8_t {
   InvalidBencode,   ///< Bencoded data is malformed or truncated.
   InvalidMetainfo,  ///< Torrent metainfo violates the spec.
   Io,               ///< File-system or disk I/O error.
@@ -199,12 +200,16 @@ namespace Raptor {
  * someErrc;`.
  *
  * Found by argument-dependent lookup on `Errc`; delegates to
- * `MakeErrorCode`.
+ * `MakeErrorCode`. The lowercase name is mandated by the
+ * `std::error_code` protocol and cannot follow the project's
+ * CamelCase convention here.
  */
+// NOLINTBEGIN(readability-identifier-naming)
 [[nodiscard]] inline std::error_code make_error_code(
   Errc errc) noexcept {
   return MakeErrorCode(errc);
 }
+// NOLINTEND(readability-identifier-naming)
 }  // namespace Raptor
 
 #endif  // RAPTOR_DOMAIN_ERROR_HPP
