@@ -41,6 +41,7 @@ endif()
 # ---------------------------------------------------------------------------
 add_library(raptor_core
     src/application/version.cpp
+    src/domain/error.cpp
 )
 
 target_include_directories(raptor_core
