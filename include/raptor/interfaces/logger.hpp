@@ -69,12 +69,18 @@ class Logger {
    */
   struct Field {
     std::string_view
-      key;  ///< Attribute name (e.g. "peer", "piece_idx").
+      mKey;  ///< Attribute name (e.g. "peer", "piece_idx").
     std::string
-      value;  ///< Attribute value (e.g. "192.168.1.1", "42").
+      mValue;  ///< Attribute value (e.g. "192.168.1.1", "42").
   };
 
   virtual ~Logger() = default;
+
+  Logger() = default;
+  Logger(const Logger&) = delete;
+  Logger& operator=(const Logger&) = delete;
+  Logger(Logger&&) = delete;
+  Logger& operator=(Logger&&) = delete;
 
   // ---------------------------------------------------------------------------
   // Plain message overloads

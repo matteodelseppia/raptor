@@ -20,19 +20,21 @@
 
 // ---- spdlog includes (confined to this file)
 // --------------------------------
+#include <spdlog/common.h>
+#include <spdlog/logger.h>
 #include <spdlog/sinks/ostream_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-#include <spdlog/spdlog.h>
 // -----------------------------------------------------------------------------
 
-#include <format>
 #include <memory>
 #include <ostream>
 #include <source_location>
 #include <span>
 #include <string>
 #include <string_view>
+#include <utility>
 
+#include "raptor/interfaces/logger.hpp"
 #include "spdlog_logger.hpp"
 
 namespace Raptor::Detail {
@@ -55,11 +57,11 @@ namespace {
 [[nodiscard]] std::string FormatWithFields(
   std::string_view msg, std::span<const Logger::Field> fields) {
   std::string out{msg};
-  for (const auto& f : fields) {
+  for (const auto& fld : fields) {
     out += ' ';
-    out += f.key;
+    out += fld.mKey;
     out += '=';
-    out += f.value;
+    out += fld.mValue;
   }
   return out;
 }
@@ -71,7 +73,7 @@ namespace {
 // ---------------------------------------------------------------------------
 
 struct SpdlogLogger::Impl {
-  std::shared_ptr<spdlog::logger> logger;
+  std::shared_ptr<spdlog::logger> mLogger;
 };
 
 // ---------------------------------------------------------------------------
@@ -81,22 +83,24 @@ struct SpdlogLogger::Impl {
 SpdlogLogger::SpdlogLogger(std::string_view name)
     : mImpl{std::make_unique<Impl>()} {
   auto sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-  mImpl->logger = std::make_shared<spdlog::logger>(std::string{name},
-                                                   std::move(sink));
-  mImpl->logger->set_level(spdlog::level::trace);
+  mImpl->mLogger = std::make_shared<spdlog::logger>(std::string{name},
+                                                    std::move(sink));
+  mImpl->mLogger->set_level(spdlog::level::trace);
   // Pattern: [timestamp] [logger] [level] message
-  mImpl->logger->set_pattern(
+  mImpl->mLogger->set_pattern(
     "[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] %v");
 }
 
-SpdlogLogger::SpdlogLogger(std::ostream& os, std::string_view name)
+SpdlogLogger::SpdlogLogger(std::ostream& outputStream,
+                           std::string_view name)
     : mImpl{std::make_unique<Impl>()} {
-  auto sink = std::make_shared<spdlog::sinks::ostream_sink_mt>(os);
-  mImpl->logger = std::make_shared<spdlog::logger>(std::string{name},
-                                                   std::move(sink));
-  mImpl->logger->set_level(spdlog::level::trace);
+  auto sink =
+    std::make_shared<spdlog::sinks::ostream_sink_mt>(outputStream);
+  mImpl->mLogger = std::make_shared<spdlog::logger>(std::string{name},
+                                                    std::move(sink));
+  mImpl->mLogger->set_level(spdlog::level::trace);
   // Simpler pattern for tests (no ANSI colour codes)
-  mImpl->logger->set_pattern("[%l] %v");
+  mImpl->mLogger->set_pattern("[%l] %v");
 }
 
 // Must be defined here so unique_ptr<Impl> destructor can see Impl's
@@ -109,27 +113,27 @@ SpdlogLogger::~SpdlogLogger() = default;
 
 void SpdlogLogger::Trace(std::string_view msg,
                          std::source_location /*loc*/) {
-  mImpl->logger->trace(msg);
+  mImpl->mLogger->trace(msg);
 }
 
 void SpdlogLogger::Debug(std::string_view msg,
                          std::source_location /*loc*/) {
-  mImpl->logger->debug(msg);
+  mImpl->mLogger->debug(msg);
 }
 
 void SpdlogLogger::Info(std::string_view msg,
                         std::source_location /*loc*/) {
-  mImpl->logger->info(msg);
+  mImpl->mLogger->info(msg);
 }
 
 void SpdlogLogger::Warn(std::string_view msg,
                         std::source_location /*loc*/) {
-  mImpl->logger->warn(msg);
+  mImpl->mLogger->warn(msg);
 }
 
 void SpdlogLogger::Error(std::string_view msg,
                          std::source_location /*loc*/) {
-  mImpl->logger->error(msg);
+  mImpl->mLogger->error(msg);
 }
 
 // ---------------------------------------------------------------------------
@@ -139,19 +143,19 @@ void SpdlogLogger::Error(std::string_view msg,
 void SpdlogLogger::Info(std::string_view msg,
                         std::span<const Logger::Field> fields,
                         std::source_location /*loc*/) {
-  mImpl->logger->info(FormatWithFields(msg, fields));
+  mImpl->mLogger->info(FormatWithFields(msg, fields));
 }
 
 void SpdlogLogger::Warn(std::string_view msg,
                         std::span<const Logger::Field> fields,
                         std::source_location /*loc*/) {
-  mImpl->logger->warn(FormatWithFields(msg, fields));
+  mImpl->mLogger->warn(FormatWithFields(msg, fields));
 }
 
 void SpdlogLogger::Error(std::string_view msg,
                          std::span<const Logger::Field> fields,
                          std::source_location /*loc*/) {
-  mImpl->logger->error(FormatWithFields(msg, fields));
+  mImpl->mLogger->error(FormatWithFields(msg, fields));
 }
 
 }  // namespace Raptor::Detail

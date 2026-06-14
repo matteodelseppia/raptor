@@ -67,7 +67,7 @@ class SpdlogLogger final : public Logger {
    * @param os    Output stream to write log lines to.
    * @param name  Logger name (default: "raptor").
    */
-  explicit SpdlogLogger(std::ostream& os,
+  explicit SpdlogLogger(std::ostream& outputStream,
                         std::string_view name = "raptor");
 
   ~SpdlogLogger() override;
