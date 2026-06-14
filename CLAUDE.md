@@ -203,6 +203,7 @@ Must be:
 * Testable
 * Clear
 * Measurable
+* Use .clang-tidy naming conventions
 
 ### Unit Test Plan
 

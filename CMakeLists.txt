@@ -40,7 +40,7 @@ endif()
 # raptor_core — domain, interfaces, infrastructure, application logic
 # ---------------------------------------------------------------------------
 add_library(raptor_core
-    src/application/placeholder.cpp
+    src/application/version.cpp
 )
 
 target_include_directories(raptor_core
@@ -53,6 +53,14 @@ target_link_libraries(raptor_core
         raptor_warnings
         $<$<TARGET_EXISTS:raptor_sanitizers>:raptor_sanitizers>
 )
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+if(RAPTOR_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
 # ---------------------------------------------------------------------------
 # raptor — CLI executable
