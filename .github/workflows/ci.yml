@@ -22,6 +22,7 @@ jobs:
   # ---------------------------------------------------------------------------
   build:
     name: build / ${{ matrix.name }}
+    needs: [format-check, tidy]
     runs-on: ${{ matrix.os }}
 
     strategy:
