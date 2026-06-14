@@ -23,9 +23,11 @@
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/ostream_sink.h>
+#include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 // -----------------------------------------------------------------------------
 
+#include <cstddef>
 #include <memory>
 #include <ostream>
 #include <source_location>
@@ -77,8 +79,39 @@ struct SpdlogLogger::Impl {
 };
 
 // ---------------------------------------------------------------------------
+// Factory methods
+// ---------------------------------------------------------------------------
+
+std::unique_ptr<SpdlogLogger> SpdlogLogger::MakeConsole(
+  std::string_view name) {
+  return std::make_unique<SpdlogLogger>(name);
+}
+
+std::unique_ptr<SpdlogLogger> SpdlogLogger::MakeRotatingFile(
+  std::string_view filePath, std::size_t maxFileSize,
+  std::size_t maxFiles, std::string_view name) {
+  // Use the private tag constructor so no temporary console sink is
+  // created.
+  return std::unique_ptr<SpdlogLogger>(new SpdlogLogger(
+    RotatingFileTag{}, filePath, maxFileSize, maxFiles, name));
+}
+
+// ---------------------------------------------------------------------------
 // Constructors / destructor
 // ---------------------------------------------------------------------------
+
+SpdlogLogger::SpdlogLogger(RotatingFileTag, std::string_view filePath,
+                           std::size_t maxFileSize,
+                           std::size_t maxFiles,
+                           std::string_view name)
+    : mImpl{std::make_unique<Impl>()} {
+  auto sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
+    std::string{filePath}, maxFileSize, maxFiles);
+  mImpl->mLogger = std::make_shared<spdlog::logger>(std::string{name},
+                                                    std::move(sink));
+  mImpl->mLogger->set_level(spdlog::level::trace);
+  mImpl->mLogger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] %v");
+}
 
 SpdlogLogger::SpdlogLogger(std::string_view name)
     : mImpl{std::make_unique<Impl>()} {
