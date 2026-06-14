@@ -9,6 +9,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Compiler warnings
 include(cmake/Warnings.cmake)
 
+# clang-format targets (format / format-check)
+include(cmake/ClangFormat.cmake)
+
 # ---------------------------------------------------------------------------
 # Third-party dependencies (FetchContent, pinned tags)
 # RAPTOR_BUILD_TESTS defaults ON for top-level builds, OFF as a subproject.
