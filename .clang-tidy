@@ -27,8 +27,6 @@ WarningsAsErrors: >
 
 HeaderFilterRegex: '(include/raptor/|src/)'
 
-AnalyzeTemporaryDtors: false
-
 FormatStyle: file
 
 CheckOptions:

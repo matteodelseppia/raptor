@@ -125,6 +125,22 @@ cmake --build build/gcc-debug --target tidy            # clang-tidy gate
 | 0054 | CLI to engine wiring and composition root | 0.75h | 0050, 0052, 0053 |
 | 0055 | End-to-end integration harness | 1h | 0050, 0054 |
 
+## Branch protection (required status checks)
+
+After task 0006, configure the following required status checks on `main` (or
+your default branch) via **Settings → Branches → Branch protection rules**:
+
+| Required check | Job name in `ci.yml` |
+|---|---|
+| `build / linux-gcc16` | `build (linux-gcc16)` |
+| `build / linux-clang22` | `build (linux-clang22)` |
+| `build / macos-arm64` | `build (macos-arm64)` |
+| `build / windows-msvc` | `build (windows-msvc)` |
+| `lint / format-check` | `format-check` |
+| `lint / tidy` | `tidy` |
+
+All six must be green before a PR can merge.
+
 ## Conventions enforced by every task
 
 - **Layering:** `domain/` never includes third-party headers. Libraries (spdlog,
