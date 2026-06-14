@@ -10,6 +10,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(cmake/Warnings.cmake)
 
 # ---------------------------------------------------------------------------
+# Third-party dependencies (FetchContent, pinned tags)
+# RAPTOR_BUILD_TESTS defaults ON for top-level builds, OFF as a subproject.
+# ---------------------------------------------------------------------------
+option(RAPTOR_BUILD_TESTS "Build unit tests (fetches googletest)" ${PROJECT_IS_TOP_LEVEL})
+include(cmake/Dependencies.cmake)
+
+# ---------------------------------------------------------------------------
 # Optional sanitizers (enabled via RAPTOR_SANITIZE=ON, e.g. the "dev" preset)
 # ---------------------------------------------------------------------------
 option(RAPTOR_SANITIZE "Enable AddressSanitizer and UndefinedBehaviorSanitizer" OFF)
