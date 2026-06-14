@@ -28,6 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # ---- Linux --------------------------------------------------------
           - name: linux-gcc16
             os: ubuntu-24.04
             preset: gcc-release
@@ -45,16 +46,43 @@ jobs:
               sudo apt-get update -qq
               sudo apt-get install -y clang-22 ninja-build
 
-          - name: macos-arm64
+          # ---- macOS (Apple Silicon) ----------------------------------------
+          - name: macos-appleclang
             os: macos-15
             preset: appleclang-release
             install: |
               brew install ninja
 
+          - name: macos-homebrew-clang
+            os: macos-15
+            preset: macos-homebrew-clang-release
+            install: |
+              brew install llvm ninja
+              echo "$(brew --prefix llvm)/bin" >> "$GITHUB_PATH"
+
+          - name: macos-gcc
+            os: macos-15
+            preset: macos-gcc-release
+            install: |
+              brew install gcc ninja
+              # Homebrew GCC ships as gcc-<N>; find the latest and symlink
+              GCC_VER=$(ls /opt/homebrew/bin/gcc-* 2>/dev/null | grep -oE '[0-9]+$' | sort -n | tail -1)
+              echo "Using Homebrew GCC ${GCC_VER}"
+              sudo ln -sf /opt/homebrew/bin/gcc-${GCC_VER}  /usr/local/bin/gcc-14
+              sudo ln -sf /opt/homebrew/bin/g++-${GCC_VER}  /usr/local/bin/g++-14
+
+          # ---- Windows ------------------------------------------------------
           - name: windows-msvc
             os: windows-2022
             preset: msvc-release
             install: ""
+
+          - name: windows-clang
+            os: windows-2022
+            preset: windows-clang-release
+            install: |
+              choco install llvm ninja --no-progress -y
+              echo "C:\Program Files\LLVM\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     steps:
       - name: Checkout
@@ -66,12 +94,17 @@ jobs:
         with:
           arch: x64
 
-      - name: Install toolchain & Ninja
-        if: matrix.install != ''
+      - name: Install toolchain & Ninja (bash)
+        if: matrix.install != '' && matrix.name != 'windows-clang'
         shell: bash
         run: ${{ matrix.install }}
 
-      - name: Install Ninja (Windows)
+      - name: Install toolchain & Ninja (PowerShell — windows-clang)
+        if: matrix.name == 'windows-clang'
+        shell: pwsh
+        run: ${{ matrix.install }}
+
+      - name: Install Ninja (Windows MSVC)
         if: matrix.name == 'windows-msvc'
         uses: seanmiddleditch/gha-setup-ninja@v5
 

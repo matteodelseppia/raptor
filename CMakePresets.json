@@ -98,6 +98,99 @@
     },
 
     {
+      "name": "windows-clang-debug",
+      "inherits": "base",
+      "displayName": "Windows Clang (LLVM) — Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "windows-clang-release",
+      "inherits": "base",
+      "displayName": "Windows Clang (LLVM) — Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+
+    {
+      "name": "macos-homebrew-clang-debug",
+      "inherits": "base",
+      "displayName": "macOS Homebrew LLVM Clang — Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++"
+      }
+    },
+    {
+      "name": "macos-homebrew-clang-release",
+      "inherits": "base",
+      "displayName": "macOS Homebrew LLVM Clang — Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++"
+      }
+    },
+
+    {
+      "name": "macos-gcc-debug",
+      "inherits": "base",
+      "displayName": "macOS Homebrew GCC — Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "gcc-14",
+        "CMAKE_CXX_COMPILER": "g++-14"
+      }
+    },
+    {
+      "name": "macos-gcc-release",
+      "inherits": "base",
+      "displayName": "macOS Homebrew GCC — Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc-14",
+        "CMAKE_CXX_COMPILER": "g++-14"
+      }
+    },
+
+    {
       "name": "dev",
       "inherits": "appleclang-debug",
       "displayName": "Dev — ASan + UBSan (Apple Clang Debug)",
@@ -108,62 +201,38 @@
   ],
 
   "buildPresets": [
-    { "name": "gcc-debug",        "configurePreset": "gcc-debug" },
-    { "name": "gcc-release",      "configurePreset": "gcc-release" },
-    { "name": "clang-debug",      "configurePreset": "clang-debug" },
-    { "name": "clang-release",    "configurePreset": "clang-release" },
-    { "name": "appleclang-debug", "configurePreset": "appleclang-debug" },
-    { "name": "appleclang-release","configurePreset": "appleclang-release" },
-    { "name": "msvc-debug",       "configurePreset": "msvc-debug" },
-    { "name": "msvc-release",     "configurePreset": "msvc-release" },
-    { "name": "dev",              "configurePreset": "dev" }
+    { "name": "gcc-debug",                    "configurePreset": "gcc-debug" },
+    { "name": "gcc-release",                  "configurePreset": "gcc-release" },
+    { "name": "clang-debug",                  "configurePreset": "clang-debug" },
+    { "name": "clang-release",                "configurePreset": "clang-release" },
+    { "name": "appleclang-debug",             "configurePreset": "appleclang-debug" },
+    { "name": "appleclang-release",           "configurePreset": "appleclang-release" },
+    { "name": "msvc-debug",                   "configurePreset": "msvc-debug" },
+    { "name": "msvc-release",                 "configurePreset": "msvc-release" },
+    { "name": "windows-clang-debug",          "configurePreset": "windows-clang-debug" },
+    { "name": "windows-clang-release",        "configurePreset": "windows-clang-release" },
+    { "name": "macos-homebrew-clang-debug",   "configurePreset": "macos-homebrew-clang-debug" },
+    { "name": "macos-homebrew-clang-release", "configurePreset": "macos-homebrew-clang-release" },
+    { "name": "macos-gcc-debug",              "configurePreset": "macos-gcc-debug" },
+    { "name": "macos-gcc-release",            "configurePreset": "macos-gcc-release" },
+    { "name": "dev",                          "configurePreset": "dev" }
   ],
 
   "testPresets": [
-    {
-      "name": "gcc-debug",
-      "configurePreset": "gcc-debug",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "gcc-release",
-      "configurePreset": "gcc-release",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "clang-debug",
-      "configurePreset": "clang-debug",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "clang-release",
-      "configurePreset": "clang-release",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "appleclang-debug",
-      "configurePreset": "appleclang-debug",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "appleclang-release",
-      "configurePreset": "appleclang-release",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "msvc-debug",
-      "configurePreset": "msvc-debug",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "msvc-release",
-      "configurePreset": "msvc-release",
-      "output": { "outputOnFailure": true }
-    },
-    {
-      "name": "dev",
-      "configurePreset": "dev",
-      "output": { "outputOnFailure": true }
-    }
+    { "name": "gcc-debug",                    "configurePreset": "gcc-debug",                    "output": { "outputOnFailure": true } },
+    { "name": "gcc-release",                  "configurePreset": "gcc-release",                  "output": { "outputOnFailure": true } },
+    { "name": "clang-debug",                  "configurePreset": "clang-debug",                  "output": { "outputOnFailure": true } },
+    { "name": "clang-release",                "configurePreset": "clang-release",                "output": { "outputOnFailure": true } },
+    { "name": "appleclang-debug",             "configurePreset": "appleclang-debug",             "output": { "outputOnFailure": true } },
+    { "name": "appleclang-release",           "configurePreset": "appleclang-release",           "output": { "outputOnFailure": true } },
+    { "name": "msvc-debug",                   "configurePreset": "msvc-debug",                   "output": { "outputOnFailure": true } },
+    { "name": "msvc-release",                 "configurePreset": "msvc-release",                 "output": { "outputOnFailure": true } },
+    { "name": "windows-clang-debug",          "configurePreset": "windows-clang-debug",          "output": { "outputOnFailure": true } },
+    { "name": "windows-clang-release",        "configurePreset": "windows-clang-release",        "output": { "outputOnFailure": true } },
+    { "name": "macos-homebrew-clang-debug",   "configurePreset": "macos-homebrew-clang-debug",   "output": { "outputOnFailure": true } },
+    { "name": "macos-homebrew-clang-release", "configurePreset": "macos-homebrew-clang-release", "output": { "outputOnFailure": true } },
+    { "name": "macos-gcc-debug",              "configurePreset": "macos-gcc-debug",              "output": { "outputOnFailure": true } },
+    { "name": "macos-gcc-release",            "configurePreset": "macos-gcc-release",            "output": { "outputOnFailure": true } },
+    { "name": "dev",                          "configurePreset": "dev",                          "output": { "outputOnFailure": true } }
   ]
 }
