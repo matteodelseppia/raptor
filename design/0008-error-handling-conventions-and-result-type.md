@@ -12,12 +12,12 @@ consistently and callers always know what went wrong. This prevents silent bugs.
 
 ## Detailed Design (for engineers)
 
-Define `raptor::Error` — a small value type carrying an `enum class Errc`
+Define `Raptor::Error` — a small value type carrying an `enum class Errc`
 (domain error categories: `InvalidBencode`, `InvalidMetainfo`, `Io`,
 `Network`, `Protocol`, `HashMismatch`, `Cancelled`, ...) plus an optional
 context `std::string`. Provide `using Result = std::expected<T, Error>` aliases
 (`template<class T> using Result = std::expected<T, Error>;` and a `Status =
-Result<void>`). Add helper makers (`fail(Errc, std::string)`) and a
+Result<void>`). Add helper makers (`Fail(Errc, std::string)`) and a
 `std::error_code`/`std::error_category` mapping for interop. Document the policy
 in a header comment: expected/recoverable failures return `Result`; truly
 exceptional/programmer errors may throw. No exceptions cross interface

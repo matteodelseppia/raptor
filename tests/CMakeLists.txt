@@ -2,6 +2,7 @@ include(GoogleTest)
 
 add_executable(raptor_tests
     smoke_test.cpp
+    error_test.cpp
 )
 
 target_link_libraries(raptor_tests
