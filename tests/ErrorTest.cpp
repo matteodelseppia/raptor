@@ -13,11 +13,11 @@
  * - std::error_code interop via MakeErrorCode and the ADL hook.
  */
 
-#include "raptor/domain/Error.hpp"
-
 #include <gtest/gtest.h>
 
 #include <string>
+
+#include "raptor/domain/Error.hpp"
 
 using Raptor::Errc;
 using Raptor::Error;
