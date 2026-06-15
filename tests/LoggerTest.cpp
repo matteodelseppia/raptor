@@ -11,7 +11,7 @@
  * installed.
  */
 
-#include "raptor/interfaces/logger.hpp"
+#include "raptor/interfaces/Logger.hpp"
 
 // Include the infrastructure adapter directly; tests are the one
 // place allowed to know about concrete implementations.
@@ -22,7 +22,7 @@
 #include <sstream>
 #include <string>
 
-#include "../src/infrastructure/spdlog_logger.hpp"
+#include "../src/infrastructure/SpdlogLogger.hpp"
 
 using ::testing::HasSubstr;
 using ::testing::InSequence;

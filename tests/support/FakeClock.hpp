@@ -25,7 +25,7 @@
 #ifndef RAPTOR_TESTS_SUPPORT_FAKE_CLOCK_HPP
 #define RAPTOR_TESTS_SUPPORT_FAKE_CLOCK_HPP
 
-#include "raptor/interfaces/clock.hpp"
+#include "raptor/interfaces/Clock.hpp"
 
 namespace Raptor {
 

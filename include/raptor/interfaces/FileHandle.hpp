@@ -1,5 +1,5 @@
 /**
- * @file file_handle.hpp
+ * @file FileHandle.hpp
  * @brief RAII handle to an open file resource.
  *
  * `FileHandle` is the move-only token returned by `FileSystem::Open`.

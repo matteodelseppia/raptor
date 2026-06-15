@@ -32,7 +32,7 @@
 #ifndef RAPTOR_INTERFACES_TIMER_HPP
 #define RAPTOR_INTERFACES_TIMER_HPP
 
-#include "raptor/interfaces/clock.hpp"
+#include "raptor/interfaces/Clock.hpp"
 
 namespace Raptor {
 

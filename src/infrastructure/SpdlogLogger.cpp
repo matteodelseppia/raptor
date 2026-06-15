@@ -36,8 +36,8 @@
 #include <string_view>
 #include <utility>
 
-#include "raptor/interfaces/logger.hpp"
-#include "spdlog_logger.hpp"
+#include "raptor/interfaces/Logger.hpp"
+#include "SpdlogLogger.hpp"
 
 namespace Raptor::Detail {
 

@@ -19,7 +19,7 @@
 #ifndef RAPTOR_INFRASTRUCTURE_SYSTEM_CLOCK_HPP
 #define RAPTOR_INFRASTRUCTURE_SYSTEM_CLOCK_HPP
 
-#include "raptor/interfaces/clock.hpp"
+#include "raptor/interfaces/Clock.hpp"
 
 namespace Raptor {
 

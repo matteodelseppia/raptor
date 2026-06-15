@@ -14,7 +14,7 @@
  * operates on real files inside it.
  */
 
-#include "raptor/interfaces/file_system.hpp"
+#include "raptor/interfaces/FileSystem.hpp"
 
 #include <gtest/gtest.h>
 
@@ -28,8 +28,8 @@
 #include <string>
 #include <string_view>
 
-#include "infrastructure/std_file_system.hpp"
-#include "support/in_memory_file_system.hpp"
+#include "infrastructure/StdFileSystem.hpp"
+#include "support/InMemoryFileSystem.hpp"
 
 using Raptor::FileHandle;
 using Raptor::FileSystem;

@@ -21,7 +21,7 @@
 #include <ostream>
 #include <string_view>
 
-#include "raptor/interfaces/logger.hpp"
+#include "raptor/interfaces/Logger.hpp"
 
 namespace Raptor::Detail {
 

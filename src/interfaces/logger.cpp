@@ -13,7 +13,7 @@
  * installed.
  */
 
-#include "raptor/interfaces/logger.hpp"
+#include "raptor/interfaces/Logger.hpp"
 
 #include <atomic>
 #include <source_location>

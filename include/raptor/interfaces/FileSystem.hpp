@@ -36,8 +36,8 @@
 #include <filesystem>
 #include <span>
 
-#include "raptor/domain/error.hpp"
-#include "raptor/interfaces/file_handle.hpp"
+#include "raptor/domain/Error.hpp"
+#include "raptor/interfaces/FileHandle.hpp"
 
 namespace Raptor {
 

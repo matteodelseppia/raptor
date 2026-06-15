@@ -3,16 +3,16 @@
  * @brief Unit tests for Clock, FakeClock, SystemClock, and Timer.
  */
 
-#include "raptor/interfaces/clock.hpp"
+#include "raptor/interfaces/Clock.hpp"
 
 #include <gtest/gtest.h>
 
 #include <chrono>
 #include <thread>
 
-#include "infrastructure/system_clock.hpp"
-#include "raptor/interfaces/timer.hpp"
-#include "support/fake_clock.hpp"
+#include "infrastructure/SystemClock.hpp"
+#include "raptor/interfaces/Timer.hpp"
+#include "support/FakeClock.hpp"
 
 using namespace std::chrono_literals;
 using Raptor::Duration;

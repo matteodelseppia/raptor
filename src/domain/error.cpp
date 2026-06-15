@@ -4,7 +4,7 @@
  * interop helpers.
  */
 
-#include "raptor/domain/error.hpp"
+#include "raptor/domain/Error.hpp"
 
 #include <string>
 #include <system_error>

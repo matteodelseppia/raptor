@@ -1,5 +1,5 @@
 /**
- * @file logger.hpp
+ * @file Logger.hpp
  * @brief Abstract logging interface for Raptor.
  *
  * Business logic depends only on this header; no third-party logging

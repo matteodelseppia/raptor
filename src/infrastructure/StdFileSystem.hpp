@@ -22,7 +22,7 @@
 #ifndef RAPTOR_INFRASTRUCTURE_STD_FILE_SYSTEM_HPP
 #define RAPTOR_INFRASTRUCTURE_STD_FILE_SYSTEM_HPP
 
-#include "raptor/interfaces/file_system.hpp"
+#include "raptor/interfaces/FileSystem.hpp"
 
 namespace Raptor {
 

@@ -1,5 +1,5 @@
 /**
- * @file clock.hpp
+ * @file Clock.hpp
  * @brief Abstract monotonic clock interface for Raptor.
  *
  * All timeout, rate-measurement, and scheduling logic must depend on

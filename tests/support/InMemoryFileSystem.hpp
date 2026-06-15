@@ -31,7 +31,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "raptor/interfaces/file_system.hpp"
+#include "raptor/interfaces/FileSystem.hpp"
 
 namespace Raptor {
 

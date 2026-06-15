@@ -367,6 +367,21 @@ Avoid old style when modern style clearer.
 
 ---
 
+## File Naming
+
+All `.hpp` and `.cpp` filenames must use TitleCase (UpperCamelCase).
+
+Examples:
+
+* `PeerManager.hpp`
+* `TorrentFile.cpp`
+* `SpdlogLogger.cpp`
+* `StdFileSystem.hpp`
+
+Split on underscores and hyphens, capitalize each word, join without separator.
+
+---
+
 ## Errors
 
 Prefer explicit errors.

@@ -1,5 +1,5 @@
 /**
- * @file error.hpp
+ * @file Error.hpp
  * @brief Error handling conventions and Result type for Raptor.
  *
  * ## Policy

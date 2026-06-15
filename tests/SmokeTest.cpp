@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "raptor/version.hpp"
+#include "raptor/Version.hpp"
 
 namespace {
 
