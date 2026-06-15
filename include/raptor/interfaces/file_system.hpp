@@ -11,8 +11,9 @@
  *
  * - `FileSystem` is a pure-virtual interface; concrete adapters live
  *   in `infrastructure/`.
- * - `FileHandle` is a move-only RAII wrapper around an opaque native
- *   handle.  Destruction automatically releases OS resources.
+ * - `FileHandle` (see `raptor/interfaces/file_handle.hpp`) is a
+ *   move-only RAII wrapper around an opaque native handle.
+ * Destruction automatically releases OS resources.
  * - All fallible operations return `Result<T>` or `Status`; callers
  *   must inspect the value.
  *
@@ -33,134 +34,12 @@
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
-#include <functional>
 #include <span>
 
 #include "raptor/domain/error.hpp"
+#include "raptor/interfaces/file_handle.hpp"
 
 namespace Raptor {
-
-// ---------------------------------------------------------------------------
-// FileHandle — RAII, move-only handle to an open file
-// ---------------------------------------------------------------------------
-
-/**
- * @brief Move-only RAII wrapper around an open-file resource.
- *
- * `FileHandle` owns the lifetime of an open file.  When it is
- * destroyed (or move-assigned over), the associated OS handle is
- * released via the closer function supplied at construction.
- *
- * Concrete `FileSystem` implementations create `FileHandle` instances
- * through the two-argument constructor.  Callers treat handles as
- * opaque tokens and pass them back to `FileSystem` methods.
- *
- * @note Not thread-safe.  Do not share a `FileHandle` across threads
- *       without external synchronisation.
- */
-class FileHandle {
- public:
-  /// Opaque integer representation of the underlying OS handle.
-  using NativeHandle = std::uintptr_t;
-
-  /// @brief Constructs an invalid (empty) handle.
-  FileHandle() = default;
-
-  /**
-   * @brief Constructs a valid handle from a native value and a
-   * closer.
-   *
-   * @param nativeHandle  Opaque value identifying the open resource
-   *                      (e.g. a FILE* cast to uintptr_t, or an
-   *                      index into an in-memory store).
-   * @param closer        Callable invoked with @p nativeHandle on
-   *                      destruction or move-assignment; must not
-   *                      throw.
-   */
-  explicit FileHandle(
-    NativeHandle nativeHandle,
-    std::function<void(NativeHandle)> closer) noexcept
-      : mNativeHandle{nativeHandle}, mCloser{std::move(closer)} {
-  }
-
-  /// @brief Releases the underlying resource.
-  ~FileHandle() {
-    if (mCloser) {
-      mCloser(mNativeHandle);
-    }
-  }
-
-  FileHandle(const FileHandle&) = delete;
-  FileHandle& operator=(const FileHandle&) = delete;
-
-  /**
-   * @brief Move-constructs from @p other; @p other becomes invalid.
-   *
-   * @param other  Source handle; its closer is transferred and it is
-   *               left in the invalid (empty) state.
-   */
-  FileHandle(FileHandle&& other) noexcept
-      : mNativeHandle{other.mNativeHandle},
-        mCloser{std::move(other.mCloser)} {
-    other.mNativeHandle = 0;
-    // std::function move leaves source in a valid-but-unspecified
-    // state; explicitly null it so IsValid() reliably returns false
-    // on the source.
-    other.mCloser = nullptr;
-  }
-
-  /**
-   * @brief Move-assigns from @p other; current resource is released
-   * first.
-   *
-   * Self-assignment is a no-op.
-   *
-   * @param other  Source handle; transferred and left invalid.
-   * @return Reference to *this.
-   */
-  FileHandle& operator=(FileHandle&& other) noexcept {
-    if (this != &other) {
-      if (mCloser) {
-        mCloser(mNativeHandle);
-      }
-      mNativeHandle = other.mNativeHandle;
-      mCloser = std::move(other.mCloser);
-      other.mNativeHandle = 0;
-      other.mCloser =
-        nullptr;  // ensure moved-from handle IsValid() == false
-    }
-    return *this;
-  }
-
-  /**
-   * @brief Returns true if the handle refers to an open resource.
-   *
-   * A default-constructed or moved-from handle is invalid.
-   */
-  [[nodiscard]] bool IsValid() const noexcept {
-    return static_cast<bool>(mCloser);
-  }
-
-  /**
-   * @brief Returns the opaque native handle value.
-   *
-   * Intended for use by `FileSystem` implementations only.  Do not
-   * interpret this value in application or domain code.
-   *
-   * @return The native handle supplied at construction.
-   */
-  [[nodiscard]] NativeHandle Native() const noexcept {
-    return mNativeHandle;
-  }
-
- private:
-  NativeHandle mNativeHandle{0};
-  std::function<void(NativeHandle)> mCloser;
-};
-
-// ---------------------------------------------------------------------------
-// FileSystem — abstract interface
-// ---------------------------------------------------------------------------
 
 /**
  * @brief Abstract interface for all Raptor disk operations.
