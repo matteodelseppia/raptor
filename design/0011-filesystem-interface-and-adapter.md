@@ -12,10 +12,10 @@ fake instead of touching the real filesystem, keeping tests fast and safe.
 
 ## Detailed Design (for engineers)
 
-In `interfaces/`, define `class IFileSystem` with the operations Raptor needs:
+In `interfaces/`, define `class Raptor::FileSystem` with the operations Raptor needs:
 `open`/`create` a file of a given size (sparse/preallocated),
-`writeAt(handle, offset, span<const byte>)`, `readAt(...)`, `exists`, `size`,
-`rename`, `remove`, and directory creation for multi-file torrents. All return
+`WriteAt(handle, offset, span<const byte>)`, `ReadAt(...)`, `Exists`, `Size`,
+`Rename`, `Remove`, and directory creation for multi-file torrents. All return
 `Status`/`Result` (task 0008). Provide a `PosixFileSystem`/`StdFileSystem`
 adapter in infrastructure using `<filesystem>` + positional I/O, and an
 `InMemoryFileSystem` fake in test-support storing buffers in a map. Ownership of
@@ -23,7 +23,7 @@ file handles is RAII (`FileHandle` move-only wrapper).
 
 ## Acceptance Criteria
 
-- `IFileSystem` covers create/read/write-at-offset/exists/size/rename/remove and lives in `interfaces/`.
+- `FileSystem` covers create/read/write-at-offset/exists/size/rename/remove and lives in `interfaces/`.
 - `StdFileSystem` performs real positional I/O; `InMemoryFileSystem` mirrors behaviour in memory.
 - File handles are RAII and move-only.
 - Errors are reported via `Result`/`Status`, not exceptions, for expected failures.

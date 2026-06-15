@@ -44,6 +44,7 @@ add_library(raptor_core
     src/domain/error.cpp
     src/interfaces/logger.cpp
     src/infrastructure/spdlog_logger.cpp
+    src/infrastructure/std_file_system.cpp
 )
 
 target_include_directories(raptor_core

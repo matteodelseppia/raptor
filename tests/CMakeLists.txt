@@ -5,6 +5,7 @@ add_executable(raptor_tests
     error_test.cpp
     logger_test.cpp
     clock_test.cpp
+    file_system_test.cpp
 )
 
 target_link_libraries(raptor_tests
