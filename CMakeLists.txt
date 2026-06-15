@@ -40,11 +40,11 @@ endif()
 # raptor_core — domain, interfaces, infrastructure, application logic
 # ---------------------------------------------------------------------------
 add_library(raptor_core
-    src/application/Version.cpp
-    src/domain/Error.cpp
-    src/interfaces/Logger.cpp
-    src/infrastructure/SpdlogLogger.cpp
-    src/infrastructure/StdFileSystem.cpp
+    "src/application/Version.cpp"
+    "src/domain/Error.cpp"
+    "src/interfaces/Logger.cpp"
+    "src/infrastructure/SpdlogLogger.cpp"
+    "src/infrastructure/StdFileSystem.cpp"
 )
 
 target_include_directories(raptor_core
@@ -71,7 +71,7 @@ endif()
 # raptor — CLI executable
 # ---------------------------------------------------------------------------
 add_executable(raptor
-    src/cli/Main.cpp
+    "src/cli/Main.cpp"
 )
 
 target_link_libraries(raptor

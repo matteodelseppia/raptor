@@ -1,11 +1,11 @@
 include(GoogleTest)
 
 add_executable(raptor_tests
-    SmokeTest.cpp
-    ErrorTest.cpp
-    LoggerTest.cpp
-    ClockTest.cpp
-    FileSystemTest.cpp
+    "SmokeTest.cpp"
+    "ErrorTest.cpp"
+    "LoggerTest.cpp"
+    "ClockTest.cpp"
+    "FileSystemTest.cpp"
 )
 
 target_link_libraries(raptor_tests
